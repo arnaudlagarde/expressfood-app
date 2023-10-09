@@ -1,0 +1,48 @@
+[
+    {
+      "firstName": "Lucas",
+      "lastName": "Martin",
+      "status": "libre",
+      "position": {
+        "latitude": 48.858844,
+        "longitude": 2.294351
+      }
+    },
+    {
+      "firstName": "Emma",
+      "lastName": "Dubois",
+      "status": "en cours de livraison",
+      "position": {
+        "latitude": 45.7597,
+        "longitude": 4.8422
+      }
+    },
+    {
+      "firstName": "Louis",
+      "lastName": "Lefebvre",
+      "status": "libre",
+      "position": {
+        "latitude": 43.6047,
+        "longitude": 1.4442
+      }
+    },
+    {
+      "firstName": "Chloé",
+      "lastName": "Durand",
+      "status": "libre",
+      "position": {
+        "latitude": 48.8575,
+        "longitude": 2.3289
+      }
+    },
+    {
+      "firstName": "Luc",
+      "lastName": "Petit",
+      "status": "en cours de livraison",
+      "position": {
+        "latitude": 50.8503,
+        "longitude": 4.3517
+      }
+    }
+  ]
+  

@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Container, Button } from 'react-bootstrap';
 
 function Home() {
   return (
     <div>
-      <h1>Accueil</h1>
-      <Link to="/menu">Voir le menu</Link>
-      <Link to="/order">Passer une commande</Link>
+      <Container>
+        <h1>Bienvenue chez ExpressFood</h1>
+        <p>Livraison de plats de qualité à domicile en moins de 20 minutes grâce à un réseau de livreurs à vélo.</p>
+        <p>Commandez un ou plusieurs plats et desserts (les frais de livraison sont gratuits à partir de 19,99€).</p>
+        <Button variant="primary">Commander maintenant</Button>
+      </Container>
     </div>
   );
 }

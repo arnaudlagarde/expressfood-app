@@ -1,0 +1,38 @@
+[
+    {
+      "firstName": "Alice",
+      "lastName": "Dupont",
+      "email": "alice@example.com",
+      "phone": "01 23 45 67 89",
+      "address": "10 Rue de la République, 75001 Paris"
+    },
+    {
+      "firstName": "Bob",
+      "lastName": "Smith",
+      "email": "bob@example.com",
+      "phone": "02 34 56 78 90",
+      "address": "25 Rue des Lilas, 69002 Lyon"
+    },
+    {
+      "firstName": "Charlie",
+      "lastName": "Brown",
+      "email": "charlie@example.com",
+      "phone": "03 45 67 89 01",
+      "address": "5 Rue de la Mairie, 31000 Toulouse"
+    },
+    {
+      "firstName": "David",
+      "lastName": "Johnson",
+      "email": "david@example.com",
+      "phone": "04 56 78 90 12",
+      "address": "18 Avenue des Champs-Élysées, 75008 Paris"
+    },
+    {
+      "firstName": "Eva",
+      "lastName": "Martin",
+      "email": "eva@example.com",
+      "phone": "05 67 89 01 23",
+      "address": "30 Rue de la Liberté, 13001 Marseille"
+    }
+  ]
+  
