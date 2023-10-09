@@ -17,7 +17,7 @@ We use Trello to manage tasks and project progress. You can view our Trello boar
 
 ## Presentation
 
-You can find the presentation slides [here](https://slides.google.com/yourpresentation).
+You can find the presentation slides [here](https://docs.google.com/presentation/d/1wuIlHXZU0ZF_8lEjsLHF0C2r44m6xBPSX_u8Za42_BA/edit?usp=sharing).
 
 ## Contributing
 
