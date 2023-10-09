@@ -13,7 +13,7 @@ To get started with the project, follow these steps:
 
 ## Trello Board
 
-We use Trello to manage tasks and project progress. You can view our Trello board [here]([https://trello.com/yourtrello](https://trello.com/b/Z2piiETa/gestion-de-projet-m%C3%A9thode-moscow)).
+We use Trello to manage tasks and project progress. You can view our Trello board [here]((https://trello.com/b/Z2piiETa/gestion-de-projet-m%C3%A9thode-moscow)).
 
 ## Presentation
 
