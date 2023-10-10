@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .plats import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('plats/', views.ListePlats.as_view(), name='liste_plats'),  # Affiche tous les plats du jour
+    path('commande/', views.PasserCommande.as_view(), name='passer_commande'),  # Page de commande
+    path('suivi-commande/', views.SuiviCommande.as_view(), name='suivi_commande'),  # Page de suivi de commande
+    # Ajoutez d'autres URL pour les livreurs, etc. si nécessaire
 ]
