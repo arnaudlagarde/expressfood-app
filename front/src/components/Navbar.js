@@ -1,7 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Navbar() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Supprimez les variables du localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("isLoggedIn");
+    // Redirigez l'utilisateur vers la page d'accueil après la déconnexion
+    navigate("/");
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -36,12 +47,20 @@ function Navbar() {
             <li className="nav-item">
               <Link to="/order-tracking" className="nav-link">Order Tracking</Link>
             </li>
-            <li className="nav-item">
-              <Link to="/register" className="nav-link">Inscription</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/login" className="nav-link">Connexion</Link>
-            </li>
+            {isLoggedIn ? (
+                            <li className="nav-item">
+                                <a href="#/" className="nav-link" onClick={handleLogout}>Déconnexion</a>
+                            </li>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link to="/register" className="nav-link">Inscription</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/login" className="nav-link">Connexion</Link>
+                                </li>
+                            </>
+                        )}
           </ul>
         </div>
       </div>

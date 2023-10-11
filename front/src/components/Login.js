@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -7,12 +8,27 @@ function Login() {
         password: "",
     });
 
+    const navigate = useNavigate(); // Utilisez useNavigate pour gérer la redirection
+
+    const handleLogout = () => {
+        // Déconnexion : supprimez les variables du localStorage
+        localStorage.removeItem("user");
+        localStorage.removeItem("isLoggedIn");
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
+    };
+
+    const handleLogin = async (user) => {
+        // Stocker les informations de l'utilisateur dans le localStorage
+        localStorage.setItem("user", JSON.stringify(user));
+        // Marquer l'utilisateur comme connecté
+        localStorage.setItem("isLoggedIn", "true");
     };
 
     const handleSubmit = async (e) => {
@@ -31,7 +47,18 @@ function Login() {
             if (response.status === 200) {
                 const user = await response.json();
                 console.log('Connexion réussie', user);
+
+                // Appeler la fonction pour gérer la connexion
+                handleLogin(user);
+                if (localStorage.getItem("isLoggedIn")){
+                    // La variable user existe, vous pouvez l'afficher dans la console de log
+                    console.log("Utilisateur connecté :", JSON.parse(localStorage.getItem("user")));
+                }else{
+                    console.log("Utilisateur non connecté");
+                }
+                
                 // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion réussie.
+                navigate("/");
             } else {
                 console.log('Échec de la connexion');
                 // La connexion a échoué, affichez un message d'erreur.
@@ -69,6 +96,11 @@ function Login() {
                     Se connecter
                 </Button>
             </Form>
+            {localStorage.getItem("isLoggedIn") === "true" && (
+                <Button variant="danger" onClick={handleLogout}>
+                    Déconnexion
+                </Button>
+            )}
         </Container>
     );
 }
