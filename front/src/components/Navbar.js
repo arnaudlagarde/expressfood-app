@@ -1,6 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import bootstrap from "bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
@@ -29,29 +28,19 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page">
-                <Link className="nav-link" to="/" element="{Home}">
-                  Accueil
-                </Link>
-              </a>
+              <Link to="/" className="nav-link">Accueil</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link">
-                <Link className="nav-link" to="/menu" element="{Menu}">
-                  Menu
-                </Link>
-              </a>
+              <Link to="/menu" className="nav-link">Menu</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link">
-                <Link
-                  className="nav-link"
-                  to="/order-tracking"
-                  element="{OrderTracking}"
-                >
-                  Order Tracking
-                </Link>
-              </a>
+              <Link to="/order-tracking" className="nav-link">Order Tracking</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/register" className="nav-link">Inscription</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/login" className="nav-link">Connexion</Link>
             </li>
           </ul>
         </div>
