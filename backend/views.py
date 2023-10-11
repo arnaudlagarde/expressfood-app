@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Plats, Commandes  # Importez les modèles Plats et Commandes
+from .models import Plats, Commandes, Clients  # Importez les modèles Plats et Commandes
 from .serializers import PlatSerializer
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -13,9 +13,9 @@ class Connexion(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
+        client = Clients.objects.get(user__username=username)
+        if client is not None and authenticate(request, username=username, password=password):
+            login(request, client.user)
             return Response({'message': 'Connecté avec succès'}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'Identifiants incorrects'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -25,8 +25,33 @@ class Inscription(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        user = User.objects.create_user(username, password=password)
+        first_name = request.data.get('firstName')
+        last_name = request.data.get('lastName')
+        email = request.data.get('email')
+        phone = request.data.get('phone')
+        address = request.data.get('address')
+        distance = request.data.get('distance')
+        
+        # Créez un nouvel utilisateur avec le modèle User
+        user = User.objects.create(username=username, password=password)
+        user.save()
+        
+        # Créez un nouveau client avec le modèle Clients
+        client = Clients(
+            user=user,
+            firstName=first_name,
+            lastName=last_name,
+            email=email,
+            phone=phone,
+            address=address,
+            distance=distance,
+            password=password
+        )
+        client.save()
+        
+        # Connexion de l'utilisateur nouvellement inscrit
         login(request, user)
+        
         return Response({'message': 'Inscrit et connecté avec succès'}, status=status.HTTP_201_CREATED)
 
 
