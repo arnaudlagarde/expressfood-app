@@ -7,6 +7,7 @@ from .models import Plats, Commandes, Clients  # Importez les modèles Plats et 
 from .serializers import PlatSerializer
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny  # Importez AllowAny
 
 
 class Connexion(APIView):
@@ -22,6 +23,8 @@ class Connexion(APIView):
 
 
 class Inscription(APIView):
+    permission_classes = [AllowAny] 
+    
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
