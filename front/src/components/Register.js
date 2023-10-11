@@ -6,6 +6,11 @@ function Register() {
         username: "",
         email: "",
         password: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        address: "",
+        distance: "",
     });
 
     const handleInputChange = (e) => {
@@ -16,10 +21,34 @@ function Register() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        try {
+            const jsonData = JSON.stringify({
+                ...formData,
+                is_staff: formData.isAdmin === 'yes',
+            });
+    
+            const response = await fetch("http://localhost:8000/inscription/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: jsonData,
+            });
+    
+            if (response.status === 201) {
+                console.log('Inscription réussie');
+                // Redirigez l'utilisateur ou affichez un message de succès.
+            } else {
+                console.log('Échec de l\'inscription');
+                // L'inscription a échoué, affichez un message d'erreur.
+            }
+        } catch (error) {
+            console.error("Erreur lors de l'inscription :", error);
+        }
     };
+    
 
     return (
         <Container>
@@ -51,6 +80,56 @@ function Register() {
                         type="password"
                         name="password"
                         value={formData.password}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Prénom</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="first_name"
+                        value={formData.first_name}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Nom de famille</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="last_name"
+                        value={formData.last_name}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Numéro de téléphone</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Adresse</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Distance</Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="distance"
+                        value={formData.distance}
                         onChange={handleInputChange}
                         required
                     />
