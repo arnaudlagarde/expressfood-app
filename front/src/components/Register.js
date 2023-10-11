@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 
 function Register() {
-
     const [formData, setFormData] = useState({
-        username: "",
         email: "",
         password: "",
         firstName: "",
@@ -25,46 +23,32 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const jsonData = JSON.stringify({
-                ...formData,
-                is_staff: formData.isAdmin === 'yes',
-            });
-    
-            const response = await fetch("http://localhost:8000/inscription/", {
+            const jsonData = JSON.stringify(formData); // Convertir les données en JSON
+
+            const response = await fetch("http://localhost:8000/inscription", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: jsonData,
             });
-    
+
             if (response.status === 201) {
-                console.log('Inscription réussie');
+                console.log("Inscription réussie");
                 // Redirigez l'utilisateur ou affichez un message de succès.
             } else {
-                console.log('Échec de l\'inscription');
+                console.log("Échec de l'inscription");
                 // L'inscription a échoué, affichez un message d'erreur.
             }
         } catch (error) {
             console.error("Erreur lors de l'inscription :", error);
         }
-    };
-    
+    }
 
     return (
         <Container>
             <h2>Inscription</h2>
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Nom d'utilisateur</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
@@ -89,8 +73,8 @@ function Register() {
                     <Form.Label>Prénom</Form.Label>
                     <Form.Control
                         type="text"
-                        name="first_name"
-                        value={formData.first_name}
+                        name="firstName"
+                        value={formData.firstName}
                         onChange={handleInputChange}
                         required
                     />
@@ -99,8 +83,8 @@ function Register() {
                     <Form.Label>Nom de famille</Form.Label>
                     <Form.Control
                         type="text"
-                        name="last_name"
-                        value={formData.last_name}
+                        name="lastName"
+                        value={formData.lastName}
                         onChange={handleInputChange}
                         required
                     />
