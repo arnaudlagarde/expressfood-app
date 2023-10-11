@@ -38,6 +38,10 @@ class Plats(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     description = models.TextField()
     prix = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='plats_images/', blank=True, null=True) # Champ pour l'image
+
+    def __str__(self):
+        return self.nom
 
 
 class Commandes(models.Model):
