@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .plats import views
-from .views import Connexion, Inscription, CSRFTokenView
+from . import views
+from .views import Connexion, Inscription
+# from .views import Connexion, Inscription, CSRFTokenView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('suivi-commande/', views.SuiviCommande.as_view(), name='suivi_commande'),
     path('connexion/', Connexion.as_view(), name='connexion'),
     path('inscription/', Inscription.as_view(), name='inscription'),
-    path('get-csrf-token/', CSRFTokenView.as_view(), name='get_csrf_token'),
+    # path('get-csrf-token/', CSRFTokenView.as_view(), name='get_csrf_token'),
 
     # Ajoutez d'autres URL pour les livreurs, etc. si nécessaire
 ]
