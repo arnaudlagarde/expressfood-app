@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Poulet rôti aux herbes",
+        "description": "Poulet tendre et juteux rôti avec des herbes fraîches, servi avec des légumes de saison.",
+        "price": 12.99,
+        "desert": "Mante concha maison",
+        "desertImage":" https://www.istockphoto.com/fr/photo/vue-de-dessus-de-quelques-manteconcha-maison-pain-sucr%C3%A9-mexicain-gm1362997633-434726864?phrase=mexicain+dessert"
+    },
+    {
+        "id": 1,
+        "name": "Pâtes Carbonara",
+        "description": "Pâtes crémeuses aux lardons, parmesan, et poivre noir fraîchement moulu.",
+        "price": 11.49,
+        "desert": true,
+        "desertImage":""
+    },
+    {
+        "id": 1,
+        "name": "Salade César",
+        "description": "Salade fraîche avec des morceaux de poulet grillé, des croûtons croustillants et une vinaigrette crémeuse.",
+        "price": 9.99,
+        "desert": true,
+        "desertImage":""
+    },
+    {
+        "id": 1,
+        "name": "Bœuf Bourguignon",
+        "description": "Plat classique de bœuf mijoté avec du vin rouge, des légumes et des herbes, servi avec des pommes de terre.",
+        "price": 15.99,
+        "desert": true,
+        "desertImage":""
+    },
+    {
+        "id": 1,
+        "name": "Pizza Margherita",
+        "description": "Pizza italienne classique avec de la sauce tomate, de la mozzarella et des feuilles de basilic.",
+        "price": 10.99,
+        "desert": true,
+        "desertImage":""
+    }
+]

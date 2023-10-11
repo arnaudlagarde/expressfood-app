@@ -1,6 +1,6 @@
-import React from 'react';
-import { Container, Card } from 'react-bootstrap';
-import platsDuJourData from '../data/platsDuJour.json';
+import React from "react";
+import { Container, Card } from "react-bootstrap";
+import platsDuJourData from "../data/platsDuJour.json";
 
 function Menu() {
   return (
@@ -10,11 +10,20 @@ function Menu() {
         <div className="row">
           {platsDuJourData.map((plat, index) => (
             <div key={index} className="col-md-4">
-              <Card>
-                <Card.Img variant="top" src={`images/${plat.image}`} alt={plat.name} />
+              <Card className="card-space">
+                <Card.Img
+                  variant="top"
+                  src={plat.platImage}
+                  height="250"
+                  alt={plat.name}
+                />
                 <Card.Body>
                   <Card.Title>{plat.name}</Card.Title>
                   <Card.Text>{plat.description}</Card.Text>
+                  <hr />
+                  <Card.Text>Dessert : {plat.desert} </Card.Text>
+                  <img src={plat.desertImage} height="180" alt="dessert" />
+                  <hr />
                   <Card.Text>Prix : {plat.price} €</Card.Text>
                 </Card.Body>
               </Card>
@@ -22,6 +31,7 @@ function Menu() {
           ))}
         </div>
       </Container>
+      <br />
     </div>
   );
 }
