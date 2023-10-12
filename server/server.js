@@ -225,6 +225,26 @@ app.put("/update-profile/:email", async (req, res) => {
     }
 });
 
+// Mettre à jour le statut de la commande
+app.put("/orders/:orderId", async (req, res) => {
+    const { orderId } = req.params;
+    const updatedStatus = req.body.statut;
+  
+    try {
+      const order = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
+  
+      if (!order) {
+        return res.status(404).json({ error: "Commande non trouvée" });
+      }
+  
+      res.status(200).json(order);
+    } catch (error) {
+      res.status(500).json({ error: "Erreur lors de la mise à jour du statut de commande" });
+    }
+  });
+  
+
+
 // Récupérer le profil utilisateur
 app.get("/profile/:email", async (req, res) => {
     const { email } = req.params;
