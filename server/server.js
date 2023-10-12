@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const _ = require('lodash');
 
 // Création de l'application Express
 const app = express();
@@ -30,6 +31,16 @@ const clientSchema = new mongoose.Schema({
 }, { collection: "Clients" });
 
 const Client = mongoose.model("Client", clientSchema);
+
+const platSchema = new mongoose.Schema({
+    nom: String,
+    type: String,
+    description: String,
+    prix: Number,
+    image: String,
+}, { collection: "Plats" });
+
+const Plat = mongoose.model("Plat", platSchema);
 
 app.use(express.json());
 
@@ -72,6 +83,42 @@ app.post("/connexion", async (req, res) => {
         }
     } catch (error) {
         res.status(400).json({ error: "Erreur lors de la connexion" });
+    }
+});
+
+// Route pour obtenir les plats du jour
+app.get("/plats_du_jour", async (req, res) => {
+    try {
+        // Requête pour récupérer tous les plats de type "Plat"
+        const plats = await Plat.find({ type: "Plat" }).exec();
+
+        // Requête pour récupérer tous les desserts de type "Dessert"
+        const desserts = await Plat.find({ type: "Dessert" }).exec();
+
+        // Sélectionnez aléatoirement 2 plats parmi tous les plats disponibles
+        const platsAleatoires = _.sampleSize(plats, 2);
+
+        // Sélectionnez aléatoirement 2 desserts parmi tous les desserts disponibles
+        const dessertsAleatoires = _.sampleSize(desserts, 2);
+
+        // Combiner les plats et les desserts aléatoires en une seule liste
+        const menuDuJour = [...platsAleatoires, ...dessertsAleatoires];
+
+        res.status(200).json(menuDuJour);
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la récupération des plats du jour" });
+    }
+});
+
+// Route pour obtenir tous les plats
+app.get("/menu", async (req, res) => {
+    try {
+        // Requête pour récupérer tous les plats
+        const tousLesPlats = await Plat.find().exec();
+
+        res.status(200).json(tousLesPlats);
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la récupération de tous les plats" });
     }
 });
 
