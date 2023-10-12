@@ -52,11 +52,13 @@ function Navbar() {
                 Menu
               </Link>
             </li>
+            {isLoggedIn && (
             <li className="nav-item">
               <Link to="/order-tracking" className="nav-link">
                 Order Tracking
               </Link>
             </li>
+            )}
           </ul>
           <ul className="navbar-nav ms-auto">
             {isLoggedIn ? (
