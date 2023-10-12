@@ -4,7 +4,6 @@ import axios from "axios";
 import "./Menu.css"; // Add your custom styles here for hover effect
 import { useCart } from "./CartContext"; // Correct import
 
-
 function Menu() {
   const [platsDuJour, setPlatsDuJour] = useState([]);
   const [desserts, setDesserts] = useState([]);
@@ -62,18 +61,16 @@ function Menu() {
 
   useEffect(() => {
     api
-      .get("/plats_du_jour")
+      .get("/plats_et_desserts_du_jour") // Changed the endpoint to get both plats and desserts of the day
       .then((response) => {
-        // Separate plats and desserts based on "type" field
-        const allPlatsDuJour = response.data;
-        const plats = allPlatsDuJour.filter((plat) => plat.type === "Plat");
-        const desserts = allPlatsDuJour.filter((plat) => plat.type === "Dessert");
+        const { plats, desserts } = response.data; // Destructure the response
 
-        setPlatsDuJour(plats);
-        setDesserts(desserts);
+        // Set only the first 2 "Plat" and "Dessert" items
+        setPlatsDuJour(plats.slice(0, 2));
+        setDesserts(desserts.slice(0, 2));
       })
       .catch((error) => {
-        console.error("Erreur lors de la récupération des plats du jour :", error);
+        console.error("Erreur lors de la récupération des plats et desserts du jour :", error);
       });
   }, []);
 

@@ -229,20 +229,20 @@ app.put("/update-profile/:email", async (req, res) => {
 app.put("/orders/:orderId", async (req, res) => {
     const { orderId } = req.params;
     const updatedStatus = req.body.statut;
-  
+
     try {
-      const order = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
-  
-      if (!order) {
-        return res.status(404).json({ error: "Commande non trouvée" });
-      }
-  
-      res.status(200).json(order);
+        const order = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
+
+        if (!order) {
+            return res.status(404).json({ error: "Commande non trouvée" });
+        }
+
+        res.status(200).json(order);
     } catch (error) {
-      res.status(500).json({ error: "Erreur lors de la mise à jour du statut de commande" });
+        res.status(500).json({ error: "Erreur lors de la mise à jour du statut de commande" });
     }
-  });
-  
+});
+
 
 
 // Récupérer le profil utilisateur
@@ -262,6 +262,18 @@ app.get("/profile/:email", async (req, res) => {
     }
 });
 
+// Route for obtenir les plats et desserts du jour
+app.get("/plats_et_desserts_du_jour", async (req, res) => {
+    try {
+        // Assuming you want the first two plats and the first two desserts
+        const platsDuJour = await Plat.find({ type: "Plat" }).limit(2);
+        const dessertsDuJour = await Plat.find({ type: "Dessert" }).limit(2);
+
+        res.status(200).json({ plats: platsDuJour, desserts: dessertsDuJour });
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la récupération des plats et desserts du jour" });
+    }
+});
 // Middleware pour gérer les erreurs 404
 app.use((req, res, next) => {
     res.status(404).send("Désolé, cette page n'existe pas !");
