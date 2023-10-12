@@ -5,6 +5,7 @@ import { useCart } from "./CartContext";
 
 function Navbar() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const user = JSON.parse(localStorage.getItem('user') || "{}");
   const userId = user.id;
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
     navigate('/');
   };
 

@@ -27,7 +27,8 @@ const clientSchema = new mongoose.Schema({
     lastName: String,
     phone: String,
     address: String,
-    distance: Number
+    distance: Number,
+    est_administrateur: Boolean // Champ pour indiquer si l'utilisateur est administrateur
 }, { collection: "Clients" });
 
 const Client = mongoose.model("Client", clientSchema);
@@ -79,8 +80,16 @@ app.use(cors());
 // Enregistrement d'un nouvel utilisateur (inscription)
 app.post("/inscription", async (req, res) => {
     try {
-        const newClient = new Client(req.body);
+        const newClientData = req.body;
+
+        // Vérifiez si la case à cocher "Administrateur" est cochée
+        newClientData.est_administrateur = req.body.est_administrateur === true;
+        
+        const newClient = new Client(newClientData);
+
+        // Enregistrez le nouvel utilisateur dans la base de données
         await newClient.save();
+
         res.status(201).json(newClient);
     } catch (error) {
         res.status(400).json({ error: "Erreur lors de l'inscription" });

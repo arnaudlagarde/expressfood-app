@@ -14,6 +14,7 @@ function Login() {
         // Déconnexion : supprimez les variables du localStorage
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("isAdmin"); // Supprimer "isAdmin" lors de la déconnexion
     };
 
     const handleInputChange = (e) => {
@@ -29,6 +30,8 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(user));
         // Marquer l'utilisateur comme connecté
         localStorage.setItem("isLoggedIn", "true");
+        // Stocker si l'utilisateur est admin ou non
+        localStorage.setItem("isAdmin", user.est_administrateur ? "true" : "false");
     };
 
     const handleSubmit = async (e) => {
@@ -53,6 +56,7 @@ function Login() {
                 if (localStorage.getItem("isLoggedIn")) {
                     // La variable user existe, vous pouvez l'afficher dans la console de log
                     console.log("Utilisateur connecté :", JSON.parse(localStorage.getItem("user")));
+                    console.log("est administrateur :", JSON.parse(localStorage.getItem("isAdmin")));
                 } else {
                     console.log("Utilisateur non connecté");
                 }

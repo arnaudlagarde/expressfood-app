@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -10,13 +11,17 @@ function Register() {
         phone: "",
         address: "",
         distance: "",
+        est_administrateur: false, // Par défaut, l'utilisateur n'est pas administrateur
     });
 
+    const navigate = useNavigate(); // Utilisez useNavigate pour gérer la redirection
+
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
+        const inputValue = type === "checkbox" ? checked : value;
         setFormData({
             ...formData,
-            [name]: value,
+            [name]: inputValue,
         });
     };
 
@@ -36,6 +41,7 @@ function Register() {
             if (response.status === 201) {
                 console.log("Inscription réussie");
                 // Redirigez l'utilisateur ou affichez un message de succès.
+                navigate("/");
             } else {
                 console.log("Échec de l'inscription");
                 // L'inscription a échoué, affichez un message d'erreur.
@@ -117,6 +123,15 @@ function Register() {
                         value={formData.distance}
                         onChange={handleInputChange}
                         required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Check
+                        type="checkbox"
+                        name="est_administrateur"
+                        label="Administrateur"
+                        checked={formData.est_administrateur}
+                        onChange={handleInputChange}
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit">
