@@ -6,7 +6,8 @@ import axios from 'axios';
 
 function OrderTracking() {
   const [clientOrders, setClientOrders] = useState([]);
-  const userId = localStorage.getItem('user')._id;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user._id
 
   useEffect(() => {
     const api = axios.create({
@@ -31,6 +32,7 @@ function OrderTracking() {
           {clientOrders.map((order, index) => (
             <ListGroup.Item key={index}>
               <strong>Commande #{order._id}</strong>
+              <strong> de {order.clientId}</strong>
               <p>Plats commandés:</p>
               <ul>
                 {order.plats.map((item, i) => (
