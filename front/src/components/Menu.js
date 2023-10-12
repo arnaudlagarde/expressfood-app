@@ -9,6 +9,7 @@ function Menu() {
   const [cart, setCart] = useState([]); // État pour gérer le panier
   const [quantities, setQuantities] = useState({}); // État pour gérer les quantités
 
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Vérifiez si l'utilisateur est connecté
   
   const api = axios.create({
     baseURL: "http://localhost:8000", // Assurez-vous que l'URL correspond à l'endroit où votre serveur Express est en cours d'exécution
@@ -105,20 +106,25 @@ function Menu() {
                   <hr />
                   <Card.Text>Prix : {plat.prix} €</Card.Text>
                 </Card.Body>
-                <Button variant="primary" onClick={() => addToCart(plat)}>
-                  Commander
-                </Button>
-                <input
-                  type="number"
-                  value={quantities[plat._id] || 1}
-                  onChange={(e) => updateQuantity(plat, e.target.value)}
-                />
+                {isLoggedIn ? ( // Condition pour afficher uniquement si l'utilisateur est connecté
+                <>
+                  <Button variant="primary" onClick={() => addToCart(plat)}>
+                    Commander
+                  </Button>
+                  <input
+                    type="number"
+                    value={quantities[plat._id] || 1}
+                    onChange={(e) => updateQuantity(plat, e.target.value)}
+                  />
+                </>
+                ) : null}
               </Card>
             </div>
           ))}
         </div>
       </Container>
       <br />
+      {isLoggedIn ? ( // Condition pour afficher uniquement si l'utilisateur est connecté
       <div>
         <h2>Panier</h2>
         {cart.map((plat) => (
@@ -127,9 +133,12 @@ function Menu() {
           </div>
         ))}
       </div>
-      <Button variant="success" onClick={handleCommande}>
-          Confirmer la commande
-      </Button>
+      ) : null}
+      {isLoggedIn ? ( // Condition pour afficher uniquement si l'utilisateur est connecté
+        <Button variant="success" onClick={handleCommande}>
+            Confirmer la commande
+        </Button>
+      ) : null}
     </div>
   );
 
