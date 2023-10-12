@@ -24,6 +24,20 @@ function OrderTracking() {
       });
   }, [userId]);
 
+  // Fonction pour calculer l'heure d'arrivée estimée
+  const calculateEstimatedArrivalTime = (order) => {
+    const orderDate = new Date(order.dateCommande);
+    const estimatedArrivalTime = new Date(orderDate);
+    
+    // Générer un nombre aléatoire entre 20 et 45 pour les minutes
+    const randomMinutes = Math.floor(Math.random() * (45 - 20 + 1)) + 20;
+    
+    // Ajouter les minutes aléatoires à l'heure de commande
+    estimatedArrivalTime.setMinutes(estimatedArrivalTime.getMinutes() + randomMinutes);
+    
+    return estimatedArrivalTime.toLocaleTimeString();
+  };
+
   return (
     <div>
       <Container>
@@ -32,7 +46,6 @@ function OrderTracking() {
           {clientOrders.map((order, index) => (
             <ListGroup.Item key={index}>
               <strong>Commande #{order._id}</strong>
-              <strong> de {order.clientId}</strong>
               <p>Plats commandés:</p>
               <ul>
                 {order.plats.map((item, i) => (
@@ -42,6 +55,7 @@ function OrderTracking() {
                 ))}
               </ul>
               <p>Statut : {order.statut}</p>
+              <p>Heure d'arrivée estimée : {calculateEstimatedArrivalTime(order)}</p>
             </ListGroup.Item>
           ))}
         </ListGroup>
