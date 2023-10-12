@@ -246,28 +246,22 @@ app.put("/orders/:orderId", async (req, res) => {
     const updatedStatus = req.body.statut;
 
     try {
-        const order = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
+        // Update the order's status and get the updated order
+        const updatedOrder = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
 
-        if (!order) {
+        if (!updatedOrder) {
             return res.status(404).json({ error: "Commande non trouvée" });
         }
 
-        res.status(200).json(order);
-        const order = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
-
-        if (!order) {
-            return res.status(404).json({ error: "Commande non trouvée" });
-        }
-
-        // Si le statut de la commande est "Livré", recherchez le livreur associé
+        // If the status of the order is "Livré", find the associated livreur and update their status to "libre"
         if (updatedStatus === "Livré") {
-            const livreurId = order.livreurId;
+            const livreurId = updatedOrder.livreurId;
 
-            // Mettez à jour le statut du livreur pour le marquer comme "libre"
+            // Update the livreur's status to "libre"
             await Livreur.findByIdAndUpdate(livreurId, { statut: "libre" });
         }
 
-        res.status(200).json(order);
+        res.status(200).json(updatedOrder);
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de la mise à jour du statut de commande" });
     }
