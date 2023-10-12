@@ -22,13 +22,11 @@ from .views import Connexion, Inscription
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # Affiche tous les plats du jour
-    path('plats/', views.ListePlats.as_view(), name='liste_plats'),
-    path('commande/', views.PasserCommande.as_view(),
-         name='passer_commande'),  # Page de commande
-    path('suivi-commande/', views.SuiviCommande.as_view(), name='suivi_commande'),
-    path('connexion/', Connexion.as_view(), name='connexion'),
-    path('inscription/', Inscription.as_view(), name='inscription'),
+    path("api/plats/", views.ListePlats.as_view(), name="liste_plats"),
+    path("api/commande/", views.PasserCommande.as_view(), name="passer_commande"),
+    path("api/suivi-commande/", views.SuiviCommande.as_view(), name="suivi_commande"),
+    path("api/connexion/", Connexion.as_view(), name="connexion"),
+    path("api/inscription/", Inscription.as_view(), name="inscription"),
     # path('get-csrf-token/', CSRFTokenView.as_view(), name='get_csrf_token'),
 
     # Ajoutez d'autres URL pour les livreurs, etc. si nécessaire
