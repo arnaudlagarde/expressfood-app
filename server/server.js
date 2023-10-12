@@ -127,6 +127,22 @@ app.post("/commandes", async (req, res) => {
 });
 
 
+//route pour récupérer les commandes (avec id du client a mettre en paramètre cf. OrderTracking.js)
+app.get('/orders', async (req, res) => {
+    try {
+      const clientId = req.query.clientId; // Récupérez l'ID du client à partir de la requête
+  
+      // Effectuez une requête pour obtenir les commandes pour ce client
+      const clientOrders = await Commande.find({ clientId: clientId }).exec();
+  
+      res.status(200).json(clientOrders);
+    } catch (error) {
+      res.status(500).json({ error: "Erreur lors de la récupération des commandes du client" });
+    }
+  });
+  
+
+
 //route pour récupérer tous les livreurs
 app.get("/livreurs", async (req, res) => {
     try {
