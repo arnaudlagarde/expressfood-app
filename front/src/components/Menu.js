@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Button } from "react-bootstrap";
+import { Container, Card, Button, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import "./Menu.css"; // Add your custom styles here for hover effect
 
@@ -12,24 +12,23 @@ function Menu() {
     baseURL: "http://localhost:8000",
   });
 
-  const addToCart = (plat) => {
-    const updatedCart = [...cart, plat];
+  const addToCart = (plat, quantity) => {
+    const updatedCart = [...cart, { ...plat, quantity: quantity }];
     setCart(updatedCart);
   };
 
-  const updateQuantity = (plat, quantity) => {
-    setQuantities({ ...quantities, [plat._id]: quantity });
-  };
-
   const handleCommande = () => {
-    const clientId = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user"))._id : null;
+    const clientId = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))._id
+      : null;
 
     if (!clientId) {
       console.error("Client ID not found in localStorage.");
       return;
     }
 
-    api.get("/livreurs-libres")
+    api
+      .get("/livreurs-libres")
       .then((response) => {
         const livreursLibres = response.data;
 
@@ -42,12 +41,16 @@ function Menu() {
 
         const nouvelleCommande = {
           clientId: clientId,
-          plats: cart.map((plat) => ({ platId: plat._id, quantite: quantities[plat._id] || 1 })),
+          plats: cart.map((plat) => ({
+            platId: plat._id,
+            quantite: plat.quantity,
+          })),
           dateCommande: new Date(),
           livreurId: premierLivreurLibre._id,
         };
 
-        api.post("/commandes", nouvelleCommande)
+        api
+          .post("/commandes", nouvelleCommande)
           .then((response) => {
             console.log("Commande créée avec succès !", response.data);
             setCart([]);
@@ -63,7 +66,8 @@ function Menu() {
   };
 
   useEffect(() => {
-    api.get("/plats_du_jour")
+    api
+      .get("/plats_du_jour")
       .then((response) => {
         setPlatsDuJour(response.data);
       })
@@ -95,14 +99,28 @@ function Menu() {
                 </Card.Body>
                 {isLoggedIn && (
                   <>
-                    <Button variant="info" onClick={() => addToCart(plat)}> {/* Change to gray-blue color */}
+                    <Dropdown>
+                      <Dropdown.Toggle variant="info">
+                        Quantité: {quantities[plat._id] || 1}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {[1, 2, 3, 4, 5].map((quantity) => (
+                          <Dropdown.Item
+                            key={quantity}
+                            onClick={() => setQuantities({ ...quantities, [plat._id]: quantity })}
+                          >
+                            {quantity}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Button
+                      variant="info" // Change to gray-blue color
+                      onClick={() => addToCart(plat, quantities[plat._id] || 1)}
+                      className="add-to-cart-button" // Add this class for hover effect
+                    >
                       Ajouter au panier
                     </Button>
-                    <input
-                      type="number"
-                      value={quantities[plat._id] || 1}
-                      onChange={(e) => updateQuantity(plat, e.target.value)}
-                    />
                   </>
                 )}
               </Card>
@@ -116,7 +134,7 @@ function Menu() {
           <h2>Panier</h2>
           {cart.map((plat) => (
             <div key={plat._id}>
-              {plat.nom} - Quantité : {quantities[plat._id] || 1}
+              {plat.nom} - Quantité : {plat.quantity}
             </div>
           ))}
           {cart.length > 0 && (
