@@ -203,6 +203,52 @@ app.get("/menu", async (req, res) => {
     }
 });
 
+// Mettre à jour le profil utilisateur
+app.put("/update-profile/:email", async (req, res) => {
+    const { email } = req.params;
+    const updatedData = req.body;
+
+    try {
+        const updatedUser = await Client.findOneAndUpdate(
+            { email: email },
+            updatedData,
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la mise à jour du profil" });
+    }
+});
+
+// Récupérer le profil utilisateur
+app.get("/profile/:email", async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const user = await Client.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la récupération du profil" });
+    }
+});
+
+// Middleware pour gérer les erreurs 404
+app.use((req, res, next) => {
+    res.status(404).send("Désolé, cette page n'existe pas !");
+});
+
+
+
 // Démarrage du serveur
 const port = 8000;
 app.listen(port, () => {

@@ -8,7 +8,8 @@ import Register from "./components/Register";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Cart from "./components/Cart";
-import MentionsLegales from "./components/MentionsLegales"; // Import MentionsLegales component
+import MentionsLegales from "./components/MentionsLegales";
+import Profile from "./components/Profile"; // Import MentionsLegales component
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
       </Routes>
       <Footer />

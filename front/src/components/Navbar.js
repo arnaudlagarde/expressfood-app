@@ -68,6 +68,11 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/profile" className="nav-link"> {/* Ajout du lien vers la page de profil */}
+                    Mon Profil
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <a href="#/" className="nav-link" onClick={handleLogout}>
                     Déconnexion
                   </a>
