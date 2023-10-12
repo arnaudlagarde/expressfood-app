@@ -2,7 +2,8 @@
 
 from django.conf import settings
 from django.db import migrations, models
-import django.db.models.deletion
+from django.db.models.deletion import CASCADE
+from django.contrib.auth.models import User  # Import User model from Django
 
 
 class Migration(migrations.Migration):
@@ -36,8 +37,8 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.OneToOneField(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to=settings.AUTH_USER_MODEL,
+                        on_delete=CASCADE,  # Use CASCADE for deletion
+                        to=User,  # Use the User model from Django
                     ),
                 ),
             ],
@@ -94,7 +95,8 @@ class Migration(migrations.Migration):
                 ("prix", models.DecimalField(decimal_places=2, max_digits=10)),
                 (
                     "image",
-                    models.ImageField(blank=True, null=True, upload_to="plats_images/"),
+                    models.ImageField(blank=True, null=True,
+                                      upload_to="plats_images/"),
                 ),
             ],
         ),
@@ -116,8 +118,8 @@ class Migration(migrations.Migration):
                 (
                     "client",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="backend.clients",
+                        on_delete=CASCADE,  # Use CASCADE for deletion
+                        to="backend.clients",  # Update to the correct app label
                     ),
                 ),
                 (
@@ -125,11 +127,16 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         blank=True,
                         null=True,
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="backend.livreurs",
+                        on_delete=CASCADE,  # Use CASCADE for deletion
+                        to="backend.livreurs",  # Update to the correct app label
                     ),
                 ),
-                ("plats", models.ManyToManyField(to="backend.plats")),
+                (
+                    "plats",
+                    models.ManyToManyField(
+                        to="backend.plats",  # Update to the correct app label
+                    ),
+                ),
             ],
         ),
     ]
