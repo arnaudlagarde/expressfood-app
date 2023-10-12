@@ -118,6 +118,12 @@ app.post("/commandes", async (req, res) => {
         const nouvelleCommande = new Commande(req.body);
         nouvelleCommande.statut = "En cours"; // Par défaut, la commande est "En cours"
 
+        // Mettre à jour le statut du livreur associé à la commande
+        const livreurId = req.body.livreurId;
+
+        // Mettez à jour le statut du livreur
+        await Livreur.findByIdAndUpdate(livreurId, { statut: "occupé" });
+
         await nouvelleCommande.save();
 
         res.status(201).json(nouvelleCommande);
@@ -236,7 +242,15 @@ app.put("/orders/:orderId", async (req, res) => {
       if (!order) {
         return res.status(404).json({ error: "Commande non trouvée" });
       }
+      
+      // Si le statut de la commande est "Livré", recherchez le livreur associé
+      if (updatedStatus === "Livré") {
+        const livreurId = order.livreurId;
   
+        // Mettez à jour le statut du livreur pour le marquer comme "libre"
+        await Livreur.findByIdAndUpdate(livreurId, { statut: "libre" });
+      }
+
       res.status(200).json(order);
     } catch (error) {
       res.status(500).json({ error: "Erreur lors de la mise à jour du statut de commande" });
