@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useCart } from "./CartContext";
 import axios from 'axios';
 
 function Cart() {
     const { cart, clearCart } = useCart();
+    const [quantities, setQuantities] = useState({});
+    const api = axios.create({
+        baseURL: "http://localhost:8000",
+      });
 
     const getTotalPrice = () => {
         return cart.reduce((total, plat) => total + plat.prix * plat.quantity, 0);
@@ -14,7 +18,7 @@ function Cart() {
 
     // Fonction pour soumettre la commande
     const submitOrder = async () => {
-        try {
+        /*try {
             // Remplacez ceci par l'ID du client connecté
             const clientId = "Votre_Id_Client";
 
@@ -34,7 +38,49 @@ function Cart() {
             clearCart();
         } catch (error) {
             console.error("Erreur lors de l'envoi de la commande:", error);
+        }*/
+        const clientId = localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user"))._id
+        : null;
+
+        if (!clientId) {
+        console.error("Client ID not found in localStorage.");
+        return;
         }
+
+        api
+        .get("/livreurs-libres")
+        .then((response) => {
+            const livreursLibres = response.data;
+
+            if (livreursLibres.length === 0) {
+            console.error("No available delivery drivers.");
+            return;
+            }
+
+            const premierLivreurLibre = livreursLibres[0];
+
+            const nouvelleCommande = {
+            clientId: clientId,
+            plats: [], // Change this to an empty array as we're not using cart here
+            dateCommande: new Date(),
+            livreurId: premierLivreurLibre._id,
+            };
+
+            api
+            .post("/commandes", nouvelleCommande)
+            .then((response) => {
+                console.log("Commande créée avec succès !", response.data);
+                clearCart(); // Clear the cart using clearCart
+                setQuantities({});
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la création de la commande :", error);
+            });
+        })
+        .catch((error) => {
+            console.error("Erreur lors de la récupération des livreurs libres :", error);
+        });
     };
 
     return (
