@@ -26,8 +26,50 @@ function Menu() {
   };
 
   const handleCommande = () => {
-    // Cette fonction doit être appelée lorsque le client confirme la commande
-    // Vous enverrez les données du panier au serveur ici
+    // Récupérez l'ID du client depuis le localStorage
+    const clientId = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user"))._id : null;
+
+    if (!clientId) {
+      console.error("ID du client non trouvé dans le localStorage.");
+      return;
+    }
+
+    // Récupérez la liste des livreurs libres
+    api.get("/livreurs-libres")
+      .then((response) => {
+        const livreursLibres = response.data;
+
+        if (livreursLibres.length === 0) {
+          console.error("Aucun livreur libre disponible.");
+          return;
+        }
+
+        // Prenez le premier livreur libre
+        const premierLivreurLibre = livreursLibres[0];
+
+        // Créez un objet qui représente la nouvelle commande avec le livreur attribué
+        const nouvelleCommande = {
+          clientId: clientId, // Remplacez par l'ID du client concerné
+          plats: cart.map((plat) => ({ platId: plat._id, quantite: quantities[plat._id] || 1 })),
+          dateCommande: new Date(),
+          livreurId: premierLivreurLibre._id, // Utilisez l'ID du premier livreur libre
+        };
+
+        // Envoyez la demande au serveur pour créer la commande
+        api.post("/commandes", nouvelleCommande)
+          .then((response) => {
+            console.log("Commande créée avec succès !", response.data);
+            // Réinitialisez le panier et les quantités après la commande
+            setCart([]);
+            setQuantities({});
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la création de la commande :", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des livreurs libres :", error);
+      });
   };
 
   useEffect(() => {

@@ -42,6 +42,32 @@ const platSchema = new mongoose.Schema({
 
 const Plat = mongoose.model("Plat", platSchema);
 
+//le modèle Livreur
+const livreurSchema = new mongoose.Schema({
+    nom: String,
+    statut: String,
+    latitude: Number,
+    longitude: Number,
+}, {collection: "Livreurs"});
+
+const Livreur = mongoose.model("Livreur", livreurSchema);
+
+//le modèle Commande
+const commandeSchema = new mongoose.Schema({
+    clientId: String,
+    plats: [
+      {
+        platId: String,
+        quantite: Number,
+      },
+    ],
+    dateCommande: Date,
+    statut: String,
+    livreurId: String,
+}, {collection: "Commandes" });
+
+const Commande = mongoose.model("Commande", commandeSchema);
+
 app.use(express.json());
 
 // Middleware pour gérer les données JSON
@@ -85,6 +111,45 @@ app.post("/connexion", async (req, res) => {
         res.status(400).json({ error: "Erreur lors de la connexion" });
     }
 });
+
+// Créez une nouvelle route pour gérer les commandes
+app.post("/commandes", async (req, res) => {
+    try {
+        const nouvelleCommande = new Commande(req.body);
+        nouvelleCommande.statut = "En cours"; // Par défaut, la commande est "En cours"
+    
+        await nouvelleCommande.save();
+    
+        res.status(201).json(nouvelleCommande);
+      } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la création de la commande" });
+      }
+});
+
+
+//route pour récupérer tous les livreurs
+app.get("/livreurs", async (req, res) => {
+    try {
+      const livreurs = await Livreur.find().exec();
+      res.status(200).json(livreurs);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des livreurs :", error);
+      res.status(500).json({ error: "Erreur lors de la récupération des livreurs" });
+    }
+});
+
+
+// Route pour obtenir la liste des livreurs avec le statut "libre"
+app.get("/livreurs-libres", async (req, res) => {
+    try {
+      const livreursLibres = await Livreur.find({ statut: "libre" }).exec();
+      res.status(200).json(livreursLibres);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des livreurs libres :", error);
+      res.status(500).json({ error: "Erreur lors de la récupération des livreurs libres" });
+    }
+});
+
 
 // Route pour obtenir les plats du jour
 app.get("/plats_du_jour", async (req, res) => {
