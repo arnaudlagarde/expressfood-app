@@ -50,13 +50,13 @@ function Login() {
 
                 // Appeler la fonction pour gérer la connexion
                 handleLogin(user);
-                if (localStorage.getItem("isLoggedIn")){
+                if (localStorage.getItem("isLoggedIn")) {
                     // La variable user existe, vous pouvez l'afficher dans la console de log
                     console.log("Utilisateur connecté :", JSON.parse(localStorage.getItem("user")));
-                }else{
+                } else {
                     console.log("Utilisateur non connecté");
                 }
-                
+
                 // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion réussie.
                 navigate("/");
             } else {

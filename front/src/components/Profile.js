@@ -5,29 +5,34 @@ import { Form, Button } from 'react-bootstrap';
 function Profile() {
     const [formData, setFormData] = useState({});
 
-    // Récupérer l'email de l'utilisateur connecté depuis le localStorage
-    const userEmail = localStorage.getItem('userEmail');
+    // Fetch the user's email from local storage
+    const user = JSON.parse(localStorage.getItem('user') || "{}");
+    const userEmail = user.email;
 
     useEffect(() => {
-        // Supposons que cette URL est celle de votre serveur qui renvoie les données du profil utilisateur
         axios.get(`http://localhost:8000/profile/${userEmail}`)
             .then(response => {
-                setFormData(response.data);
+                const profileData = response.data;
+                setFormData(profileData);
+                // Update local storage with the latest profile data
+                localStorage.setItem('user', JSON.stringify(profileData));
             })
             .catch(error => {
-                console.error('Erreur lors de la récupération du profil', error);
+                console.error('Error fetching profile data', error);
             });
-    }, [userEmail]);  // Ne l'exécuter qu'une fois lors du montage du composant
+    }, [userEmail]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         axios.put(`http://localhost:8000/update-profile/${userEmail}`, formData)
             .then(response => {
-                console.log('Profil mis à jour', response.data);
+                console.log('Profile updated', response.data);
+                // Update local storage with the updated profile data
+                localStorage.setItem('user', JSON.stringify(response.data));
             })
             .catch(error => {
-                console.error('Erreur lors de la mise à jour du profil', error);
+                console.error('Error updating profile', error);
             });
     };
 
@@ -38,15 +43,22 @@ function Profile() {
 
     return (
         <div>
-            <h1>Profil de {formData.firstName} {formData.lastName}</h1>
+            <h1>Profile of {formData.firstName} {formData.lastName}</h1>
             <Form onSubmit={handleSubmit}>
-                {/* Supposons que votre formulaire ressemble à cela */}
                 <Form.Group>
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" value={formData.email || ''} onChange={handleChange} />
                 </Form.Group>
-                {/* Ajoutez d'autres champs ici */}
-                <Button type="submit">Mettre à jour</Button>
+                <Form.Group>
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" name="firstName" value={formData.firstName || ''} onChange={handleChange} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" name="lastName" value={formData.lastName || ''} onChange={handleChange} />
+                </Form.Group>
+                {/* Add other fields here as needed */}
+                <Button type="submit">Update</Button>
             </Form>
         </div>
     );

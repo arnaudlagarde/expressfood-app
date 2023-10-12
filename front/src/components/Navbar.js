@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Badge } from 'react-bootstrap'; // Import Badge component
-import { useCart } from "./CartContext"; // Correct import
+import { Badge } from 'react-bootstrap';
+import { useCart } from "./CartContext";
 
 function Navbar() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const user = JSON.parse(localStorage.getItem('user') || "{}");
+  const userId = user.id;
   const navigate = useNavigate();
-  const { cart } = useCart(); // Use the cart from the CartContext
+  const { cart } = useCart();
 
   const handleLogout = () => {
-    // Supprimez les variables du localStorage
     localStorage.removeItem('user');
     localStorage.removeItem('isLoggedIn');
-    // Redirigez l'utilisateur vers la page d'accueil après la déconnexion
     navigate('/');
   };
 
@@ -68,7 +68,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/profile" className="nav-link"> {/* Ajout du lien vers la page de profil */}
+                  <Link to="/profile" className="nav-link">
                     Mon Profil
                   </Link>
                 </li>
