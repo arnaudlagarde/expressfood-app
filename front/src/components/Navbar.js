@@ -5,6 +5,7 @@ import { useCart } from "./CartContext";
 
 function Navbar() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const user = JSON.parse(localStorage.getItem('user') || "{}");
   const userId = user.id;
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
     navigate('/');
   };
 
@@ -56,6 +58,20 @@ function Navbar() {
             <li className="nav-item">
               <Link to="/order-tracking" className="nav-link">
                 Order Tracking
+              </Link>
+            </li>
+            )}
+            {isAdmin && (
+            <li className="nav-item">
+              <Link to="/admin-plats" className="nav-link">
+                Tous les Plats
+              </Link>
+            </li>
+            )}
+            {isAdmin && (
+            <li className="nav-item">
+              <Link to="/admin-livreurs" className="nav-link">
+                Tous les Livreurs
               </Link>
             </li>
             )}

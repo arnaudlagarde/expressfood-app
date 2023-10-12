@@ -27,7 +27,8 @@ const clientSchema = new mongoose.Schema({
     lastName: String,
     phone: String,
     address: String,
-    distance: Number
+    distance: Number,
+    est_administrateur: Boolean // Champ pour indiquer si l'utilisateur est administrateur
 }, { collection: "Clients" });
 
 const Client = mongoose.model("Client", clientSchema);
@@ -79,8 +80,16 @@ app.use(cors());
 // Enregistrement d'un nouvel utilisateur (inscription)
 app.post("/inscription", async (req, res) => {
     try {
-        const newClient = new Client(req.body);
+        const newClientData = req.body;
+
+        // Vérifiez si la case à cocher "Administrateur" est cochée
+        newClientData.est_administrateur = req.body.est_administrateur === true;
+
+        const newClient = new Client(newClientData);
+
+        // Enregistrez le nouvel utilisateur dans la base de données
         await newClient.save();
+
         res.status(201).json(newClient);
     } catch (error) {
         res.status(400).json({ error: "Erreur lors de l'inscription" });
@@ -117,6 +126,12 @@ app.post("/commandes", async (req, res) => {
     try {
         const nouvelleCommande = new Commande(req.body);
         nouvelleCommande.statut = "En cours"; // Par défaut, la commande est "En cours"
+
+        // Mettre à jour le statut du livreur associé à la commande
+        const livreurId = req.body.livreurId;
+
+        // Mettez à jour le statut du livreur
+        await Livreur.findByIdAndUpdate(livreurId, { statut: "occupé" });
 
         await nouvelleCommande.save();
 
@@ -235,6 +250,21 @@ app.put("/orders/:orderId", async (req, res) => {
 
         if (!order) {
             return res.status(404).json({ error: "Commande non trouvée" });
+        }
+
+        res.status(200).json(order);
+        const order = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
+
+        if (!order) {
+            return res.status(404).json({ error: "Commande non trouvée" });
+        }
+
+        // Si le statut de la commande est "Livré", recherchez le livreur associé
+        if (updatedStatus === "Livré") {
+            const livreurId = order.livreurId;
+
+            // Mettez à jour le statut du livreur pour le marquer comme "libre"
+            await Livreur.findByIdAndUpdate(livreurId, { statut: "libre" });
         }
 
         res.status(200).json(order);

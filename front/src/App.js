@@ -10,6 +10,8 @@ import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import MentionsLegales from "./components/MentionsLegales";
 import Profile from "./components/Profile"; // Import MentionsLegales component
+import AdminPlatsPage from "./components/AdminPlatsPage"; // Importez la page d'administration des plats
+import AdminLivreursPage from "./components/AdminLivreursPage"; // Importez la page d'administration des livreurs
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/admin-plats" element={<AdminPlatsPage />} />
+        <Route path="/admin-livreurs" element={<AdminLivreursPage />} />
       </Routes>
       <Footer />
     </Router>
