@@ -13,10 +13,10 @@ const app = express();
 mongoose.connect("mongodb+srv://nadimhamimid:nadim1234@cluster0.gnbsw2l.mongodb.net/Restaurant", {
     useNewUrlParser: true,
     useUnifiedTopology: true
-    }).then(() => {
-        console.log("Connexion à la base de données MongoDB réussie");
-    }).catch((error) => {
-        console.error("Erreur de connexion à la base de données MongoDB :", error);
+}).then(() => {
+    console.log("Connexion à la base de données MongoDB réussie");
+}).catch((error) => {
+    console.error("Erreur de connexion à la base de données MongoDB :", error);
 });
 
 // Modèle Clients
@@ -48,7 +48,7 @@ const livreurSchema = new mongoose.Schema({
     statut: String,
     latitude: Number,
     longitude: Number,
-}, {collection: "Livreurs"});
+}, { collection: "Livreurs" });
 
 const Livreur = mongoose.model("Livreur", livreurSchema);
 
@@ -56,15 +56,15 @@ const Livreur = mongoose.model("Livreur", livreurSchema);
 const commandeSchema = new mongoose.Schema({
     clientId: String,
     plats: [
-      {
-        platId: String,
-        quantite: Number,
-      },
+        {
+            platId: String,
+            quantite: Number,
+        },
     ],
     dateCommande: Date,
     statut: String,
     livreurId: String,
-}, {collection: "Commandes" });
+}, { collection: "Commandes" });
 
 const Commande = mongoose.model("Commande", commandeSchema);
 
@@ -117,40 +117,40 @@ app.post("/commandes", async (req, res) => {
     try {
         const nouvelleCommande = new Commande(req.body);
         nouvelleCommande.statut = "En cours"; // Par défaut, la commande est "En cours"
-    
+
         await nouvelleCommande.save();
-    
+
         res.status(201).json(nouvelleCommande);
-      } catch (error) {
+    } catch (error) {
         res.status(500).json({ error: "Erreur lors de la création de la commande" });
-      }
+    }
 });
 
 
 //route pour récupérer les commandes (avec id du client a mettre en paramètre cf. OrderTracking.js)
 app.get('/orders', async (req, res) => {
     try {
-      const clientId = req.query.clientId; // Récupérez l'ID du client à partir de la requête
-  
-      // Effectuez une requête pour obtenir les commandes pour ce client
-      const clientOrders = await Commande.find({ clientId: clientId }).exec();
-  
-      res.status(200).json(clientOrders);
+        const clientId = req.query.clientId; // Récupérez l'ID du client à partir de la requête
+
+        // Effectuez une requête pour obtenir les commandes pour ce client
+        const clientOrders = await Commande.find({ clientId: clientId }).exec();
+
+        res.status(200).json(clientOrders);
     } catch (error) {
-      res.status(500).json({ error: "Erreur lors de la récupération des commandes du client" });
+        res.status(500).json({ error: "Erreur lors de la récupération des commandes du client" });
     }
-  });
-  
+});
+
 
 
 //route pour récupérer tous les livreurs
 app.get("/livreurs", async (req, res) => {
     try {
-      const livreurs = await Livreur.find().exec();
-      res.status(200).json(livreurs);
+        const livreurs = await Livreur.find().exec();
+        res.status(200).json(livreurs);
     } catch (error) {
-      console.error("Erreur lors de la récupération des livreurs :", error);
-      res.status(500).json({ error: "Erreur lors de la récupération des livreurs" });
+        console.error("Erreur lors de la récupération des livreurs :", error);
+        res.status(500).json({ error: "Erreur lors de la récupération des livreurs" });
     }
 });
 
@@ -158,11 +158,11 @@ app.get("/livreurs", async (req, res) => {
 // Route pour obtenir la liste des livreurs avec le statut "libre"
 app.get("/livreurs-libres", async (req, res) => {
     try {
-      const livreursLibres = await Livreur.find({ statut: "libre" }).exec();
-      res.status(200).json(livreursLibres);
+        const livreursLibres = await Livreur.find({ statut: "libre" }).exec();
+        res.status(200).json(livreursLibres);
     } catch (error) {
-      console.error("Erreur lors de la récupération des livreurs libres :", error);
-      res.status(500).json({ error: "Erreur lors de la récupération des livreurs libres" });
+        console.error("Erreur lors de la récupération des livreurs libres :", error);
+        res.status(500).json({ error: "Erreur lors de la récupération des livreurs libres" });
     }
 });
 
@@ -206,5 +206,5 @@ app.get("/menu", async (req, res) => {
 // Démarrage du serveur
 const port = 8000;
 app.listen(port, () => {
-  console.log(`Serveur en cours d'exécution sur le port ${port}`);
+    console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });

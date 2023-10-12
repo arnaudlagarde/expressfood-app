@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 function Home() {
@@ -13,7 +14,9 @@ function Home() {
           Tel : 01 55 43 26 65
         </a>
       </p>
-      <Button variant="primary">Commandez maintenant</Button>
+      <Link to="/menu">
+        <Button variant="primary">Commandez maintenant</Button>
+      </Link>
     </div>
   );
 }
