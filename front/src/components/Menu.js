@@ -83,7 +83,7 @@ function Menu() {
         <div className="row">
           {platsDuJour.map((plat) => (
             <div key={plat._id} className="col-md-4">
-              <Card className="card-space">
+              <Card className="card-space dish-card">
                 <Card.Img
                   variant="top"
                   src={plat.image}
@@ -100,7 +100,7 @@ function Menu() {
                 {isLoggedIn && (
                   <>
                     <Dropdown>
-                      <Dropdown.Toggle variant="info">
+                      <Dropdown.Toggle variant="secondary" className="quantity-toggle">
                         Quantité: {quantities[plat._id] || 1}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -108,6 +108,7 @@ function Menu() {
                           <Dropdown.Item
                             key={quantity}
                             onClick={() => setQuantities({ ...quantities, [plat._id]: quantity })}
+                            className="quantity-dropdown-item" // Add this class for gray/white color
                           >
                             {quantity}
                           </Dropdown.Item>
@@ -115,7 +116,7 @@ function Menu() {
                       </Dropdown.Menu>
                     </Dropdown>
                     <Button
-                      variant="info" // Change to gray-blue color
+                      variant="secondary"
                       onClick={() => addToCart(plat, quantities[plat._id] || 1)}
                       className="add-to-cart-button" // Add this class for hover effect
                     >
@@ -138,7 +139,11 @@ function Menu() {
             </div>
           ))}
           {cart.length > 0 && (
-            <Button variant="success" onClick={handleCommande}>
+            <Button
+              variant="secondary" // Change to gray/white color
+              onClick={handleCommande}
+              className="confirm-command-button" // Add this class for gray/white color
+            >
               Confirmer la commande
             </Button>
           )}
