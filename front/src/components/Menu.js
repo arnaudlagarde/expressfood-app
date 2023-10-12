@@ -5,6 +5,7 @@ import "./Menu.css"; // Add your custom styles here for hover effect
 
 function Menu() {
   const [platsDuJour, setPlatsDuJour] = useState([]);
+  const [desserts, setDesserts] = useState([]);
   const [cart, setCart] = useState([]);
   const [quantities, setQuantities] = useState({});
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -69,7 +70,13 @@ function Menu() {
     api
       .get("/plats_du_jour")
       .then((response) => {
-        setPlatsDuJour(response.data);
+        // Separate plats and desserts based on "type" field
+        const allPlatsDuJour = response.data;
+        const plats = allPlatsDuJour.filter((plat) => plat.type === "Plat");
+        const desserts = allPlatsDuJour.filter((plat) => plat.type === "Dessert");
+
+        setPlatsDuJour(plats);
+        setDesserts(desserts);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des plats du jour :", error);
@@ -130,6 +137,60 @@ function Menu() {
         </div>
       </Container>
       <br />
+
+      <Container>
+        <h2>Desserts</h2>
+        <div className="row">
+          {desserts.map((plat) => (
+            <div key={plat._id} className="col-md-4">
+              <Card className="card-space dish-card">
+                <Card.Img
+                  variant="top"
+                  src={plat.image}
+                  height="250"
+                  alt={plat.nom}
+                  className="dish-image" // Add this class for hover effect
+                />
+                <Card.Body>
+                  <Card.Title>{plat.nom}</Card.Title>
+                  <Card.Text>{plat.description}</Card.Text>
+                  <hr />
+                  <Card.Text>Prix : {plat.prix} €</Card.Text>
+                </Card.Body>
+                {isLoggedIn && (
+                  <>
+                    <Dropdown>
+                      <Dropdown.Toggle variant="secondary" className="quantity-toggle">
+                        Quantité: {quantities[plat._id] || 1}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {[1, 2, 3, 4, 5].map((quantity) => (
+                          <Dropdown.Item
+                            key={quantity}
+                            onClick={() => setQuantities({ ...quantities, [plat._id]: quantity })}
+                            className="quantity-dropdown-item" // Add this class for gray/white color
+                          >
+                            {quantity}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Button
+                      variant="secondary"
+                      onClick={() => addToCart(plat, quantities[plat._id] || 1)}
+                      className="add-to-cart-button" // Add this class for hover effect
+                    >
+                      Ajouter au panier
+                    </Button>
+                  </>
+                )}
+              </Card>
+            </div>
+          ))}
+        </div>
+      </Container>
+
+      <br />
       {isLoggedIn && (
         <div>
           <h2>Panier</h2>
@@ -142,8 +203,10 @@ function Menu() {
             <Button
               variant="secondary" // Change to gray/white color
               onClick={handleCommande}
-              className="confirm-command-button" // Add this class for gray/white color
+              className="confirm-commande-button" // Add this class for gray/white color
             >
+              Confirmer la commande
+              >
               Confirmer la commande
             </Button>
           )}
