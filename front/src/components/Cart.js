@@ -10,6 +10,8 @@ function Cart() {
         return cart.reduce((total, plat) => total + plat.prix * plat.quantity, 0);
     };
 
+    const shippingCost = (getTotalPrice() >= 19.99) ? 0 : 5;  // Frais de livraison gratuits à partir de 19,99€, sinon 5€
+
     // Fonction pour soumettre la commande
     const submitOrder = async () => {
         try {
@@ -50,6 +52,7 @@ function Cart() {
                         ))}
                     </ul>
                     <p>Total : {getTotalPrice()} €</p>
+                    <p>Frais de livraison : {shippingCost === 0 ? 'Gratuits' : shippingCost + ' €'}</p>
                     <Button variant="secondary" onClick={clearCart}>
                         Vider le panier
                     </Button>
