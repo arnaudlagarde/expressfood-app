@@ -2,21 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Container, Card, Button, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import "./Menu.css"; // Add your custom styles here for hover effect
+import { useCart } from "./CartContext"; // Correct import
+
 
 function Menu() {
   const [platsDuJour, setPlatsDuJour] = useState([]);
   const [desserts, setDesserts] = useState([]);
-  const [cart, setCart] = useState([]);
+  const { addToCart, clearCart } = useCart(); // Use the addToCart and clearCart from the CartContext
   const [quantities, setQuantities] = useState({});
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const api = axios.create({
     baseURL: "http://localhost:8000",
   });
-
-  const addToCart = (plat, quantity) => {
-    const updatedCart = [...cart, { ...plat, quantity: quantity }];
-    setCart(updatedCart);
-  };
 
   const handleCommande = () => {
     const clientId = localStorage.getItem("user")
@@ -42,10 +39,7 @@ function Menu() {
 
         const nouvelleCommande = {
           clientId: clientId,
-          plats: cart.map((plat) => ({
-            platId: plat._id,
-            quantite: plat.quantity,
-          })),
+          plats: [], // Change this to an empty array as we're not using cart here
           dateCommande: new Date(),
           livreurId: premierLivreurLibre._id,
         };
@@ -54,7 +48,7 @@ function Menu() {
           .post("/commandes", nouvelleCommande)
           .then((response) => {
             console.log("Commande créée avec succès !", response.data);
-            setCart([]);
+            clearCart(); // Clear the cart using clearCart
             setQuantities({});
           })
           .catch((error) => {
@@ -191,27 +185,6 @@ function Menu() {
       </Container>
 
       <br />
-      {isLoggedIn && (
-        <div>
-          <h2>Panier</h2>
-          {cart.map((plat) => (
-            <div key={plat._id}>
-              {plat.nom} - Quantité : {plat.quantity}
-            </div>
-          ))}
-          {cart.length > 0 && (
-            <Button
-              variant="secondary" // Change to gray/white color
-              onClick={handleCommande}
-              className="confirm-commande-button" // Add this class for gray/white color
-            >
-              Confirmer la commande
-              >
-              Confirmer la commande
-            </Button>
-          )}
-        </div>
-      )}
     </div>
   );
 }
