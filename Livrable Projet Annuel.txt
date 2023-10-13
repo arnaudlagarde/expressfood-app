@@ -2,6 +2,9 @@
 
 Ce projet a été réalisé par Arnaud, Nadim Pierre-Antoine & Rudy.
 Les liens sont aussi présents dans le README.md
+J'ai laissé les traces de notre tentative infructueuse de lier Django à MongoDB pour montrer que nous avons perdu beaucoup de temps dessus.
+Ces fichiers ne sont donc pas utilisé dans la version finale de notre webapp.
+Je parle des fichiers des dossiers "backend" et "plats".
 
 1. REPOSITORY GITHUB :
 Le code source complet du projet est disponible sur notre repository GitHub à l'adresse suivante :
