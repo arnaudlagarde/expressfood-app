@@ -77,14 +77,7 @@ function OrderTracking() {
           {clientOrders.map((order, index) => (
             <ListGroup.Item key={index}>
               <strong>Commande #{order._id}</strong>
-              <p>Plats commandés:</p>
-              <ul>
-                {order.plats.map((item, i) => (
-                  <li key={i}>
-                    {item.quantite} x {item.platId}
-                  </li>
-                ))}
-              </ul>
+              <p>Date de Commande : {new Date(order.dateCommande).toLocaleString()}</p>
               <p>Statut : {order.statut}</p>
               <p>Heure d'arrivée estimée : {order.estimatedArrivalTime.toLocaleTimeString()}</p>
             </ListGroup.Item>
