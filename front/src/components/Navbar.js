@@ -75,6 +75,13 @@ function Navbar() {
               </Link>
             </li>
             )}
+            {isAdmin && ( // Ajoutez ce bloc pour le lien "Gestion des Commandes"
+            <li className="nav-item">
+              <Link to="/admin/commandes" className="nav-link">
+                Gestion des Commandes
+              </Link>
+            </li>
+            )}
           </ul>
           <ul className="navbar-nav ms-auto">
             {isLoggedIn ? (

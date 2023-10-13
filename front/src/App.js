@@ -12,6 +12,7 @@ import MentionsLegales from "./components/MentionsLegales";
 import Profile from "./components/Profile"; // Import MentionsLegales component
 import AdminPlatsPage from "./components/AdminPlatsPage"; // Importez la page d'administration des plats
 import AdminLivreursPage from "./components/AdminLivreursPage"; // Importez la page d'administration des livreurs
+import AdminCommandes from "./components/AdminCommandes"; // Import AdminCommandes component
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/admin-plats" element={<AdminPlatsPage />} />
         <Route path="/admin-livreurs" element={<AdminLivreursPage />} />
+        <Route path="/admin/commandes" element={<AdminCommandes />} /> 
       </Routes>
       <Footer />
     </Router>

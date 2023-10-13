@@ -218,6 +218,18 @@ app.get("/menu", async (req, res) => {
     }
 });
 
+// Route pour obtenir toutes les commandes en cours
+app.get("/commandes", async (req, res) => {
+    try {
+        // Effectuez une requête pour obtenir toutes les commandes avec le statut "En cours"
+        const commandesEnCours = await Commande.find({ statut: "En cours" }).exec();
+        res.status(200).json(commandesEnCours);
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la récupération des commandes en cours" });
+    }
+});
+
+
 // Mettre à jour le profil utilisateur
 app.put("/update-profile/:email", async (req, res) => {
     const { email } = req.params;
@@ -298,6 +310,28 @@ app.get("/plats_et_desserts_du_jour", async (req, res) => {
         res.status(500).json({ error: "Erreur lors de la récupération des plats et desserts du jour" });
     }
 });
+
+// Route pour supprimer une commande par son ID
+app.delete("/commandes/:commandeId", async (req, res) => {
+    try {
+        const { commandeId } = req.params;
+
+        // Vérifiez si la commande avec l'ID spécifié existe
+        const commande = await Commande.findById(commandeId).exec();
+
+        if (!commande) {
+            return res.status(404).json({ error: "Commande non trouvée" });
+        }
+
+        // Supprimez la commande de la base de données
+        await Commande.findByIdAndRemove(commandeId).exec();
+
+        res.status(200).json({ message: "Commande supprimée avec succès" });
+    } catch (error) {
+        res.status(500).json({ error: "Erreur lors de la suppression de la commande" });
+    }
+});
+
 // Middleware pour gérer les erreurs 404
 app.use((req, res, next) => {
     res.status(404).send("Désolé, cette page n'existe pas !");
