@@ -332,6 +332,37 @@ app.delete("/commandes/:commandeId", async (req, res) => {
     }
 });
 
+// Route pour obtenir la liste des utilisateurs
+app.get("/users", async (req, res) => {
+    try {
+        // Récupérez la liste de tous les utilisateurs depuis la base de données
+        const users = await Client.find().exec();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des utilisateurs :", error);
+        res.status(500).json({ error: "Erreur lors de la récupération des utilisateurs" });
+    }
+});
+
+// Route pour supprimer un utilisateur par ID
+app.delete("/users/:userId", async (req, res) => {
+    const { userId } = req.params;
+    try {
+        // Supprimez l'utilisateur correspondant par son ID
+        const deletedUser = await Client.findByIdAndRemove(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+
+        res.status(200).json(deletedUser);
+    } catch (error) {
+        console.error("Erreur lors de la suppression de l'utilisateur :", error);
+        res.status(500).json({ error: "Erreur lors de la suppression de l'utilisateur" });
+    }
+});
+
+
 // Middleware pour gérer les erreurs 404
 app.use((req, res, next) => {
     res.status(404).send("Désolé, cette page n'existe pas !");

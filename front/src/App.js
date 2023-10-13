@@ -13,6 +13,8 @@ import Profile from "./components/Profile"; // Import MentionsLegales component
 import AdminPlatsPage from "./components/AdminPlatsPage"; // Importez la page d'administration des plats
 import AdminLivreursPage from "./components/AdminLivreursPage"; // Importez la page d'administration des livreurs
 import AdminCommandes from "./components/AdminCommandes"; // Import AdminCommandes component
+import AdminUsers from "./components/AdminUsers"; // Ajout de la route pour la gestion des utilisateurs
+
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
         <Route path="/admin-plats" element={<AdminPlatsPage />} />
         <Route path="/admin-livreurs" element={<AdminLivreursPage />} />
         <Route path="/admin/commandes" element={<AdminCommandes />} /> 
+        <Route path="/admin-users" element={<AdminUsers />} /> 
       </Routes>
       <Footer />
     </Router>

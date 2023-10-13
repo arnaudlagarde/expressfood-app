@@ -82,6 +82,13 @@ function Navbar() {
               </Link>
             </li>
             )}
+            {isAdmin && (
+            <li className="nav-item">
+              <Link to="/admin-users" className="nav-link">
+                Gestion des Utilisateurs
+              </Link>
+            </li>
+            )}
           </ul>
           <ul className="navbar-nav ms-auto">
             {isLoggedIn ? (
