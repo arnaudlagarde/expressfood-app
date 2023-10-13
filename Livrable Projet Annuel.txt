@@ -1,0 +1,23 @@
+================= LIVRABLES POUR LE PROJET EXPRESSFOOD =================
+
+Ce projet a été réalisé par Arnaud, Nadim Pierre-Antoine & Rudy.
+Les liens sont aussi présents dans le README.md
+
+1. REPOSITORY GITHUB :
+Le code source complet du projet est disponible sur notre repository GitHub à l'adresse suivante :
+https://github.com/arnaudlagarde/expressfood-app
+
+2. TRELLO - GESTION DE PROJET :
+Nous utilisons Trello pour la gestion des tâches et le suivi de la progression du projet. Vous pouvez consulter notre tableau Trello ici :
+https://trello.com/invite/b/Z2piiETa/ATTI81268edf7a9671b42809acb213376b95D071092E/gestion-de-projet-methode-moscow
+
+3. DIAPORAMA - PRÉSENTATION DU PROJET :
+Pour une vue d'ensemble et une présentation concise du projet, consultez notre diaporama sur Genially à l'adresse :
+https://view.genial.ly/652511638718a5001161f794/guide-web-guide
+
+4. AUTRES LIVRABLES :
+Tous les autres documents et livrables pertinents peuvent être trouvés directement sur notre repository GitHub ou peuvent être fournis sur demande.
+
+=======================================================================
+
+Merci de prendre le temps de consulter notre travail. Pour toute question ou commentaire, n'hésitez pas à nous contacter.
