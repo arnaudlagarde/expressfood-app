@@ -17,7 +17,7 @@ function Cart() {
         );
     };
 
-    const shippingCost = getTotalPrice() >= 19.99 ? 0 : 5; // Frais de livraison gratuits à partir de 19,99€, sinon 5€
+    const shippingCost = getTotalPrice() >= 19.99 ? 0 : 5;
 
     const submitOrder = async () => {
         const clientId = localStorage.getItem("user")
@@ -43,7 +43,7 @@ function Cart() {
 
                 const nouvelleCommande = {
                     clientId: clientId,
-                    plats: [], // Change this to an empty array as we're not using cart here
+                    plats: [],
                     dateCommande: new Date(),
                     livreurId: premierLivreurLibre._id,
                 };
@@ -52,7 +52,7 @@ function Cart() {
                     .post("/commandes", nouvelleCommande)
                     .then((response) => {
                         console.log("Commande créée avec succès !", response.data);
-                        clearCart(); // Clear the cart using clearCart
+                        clearCart();
                         setQuantities({});
                     })
                     .catch((error) => {

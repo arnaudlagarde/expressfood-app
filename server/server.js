@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const _ = require('lodash');
 
-// Création de l'application Express
 const app = express();
 
 
@@ -19,7 +18,6 @@ mongoose.connect("mongodb+srv://nadimhamimid:nadim1234@cluster0.gnbsw2l.mongodb.
     console.error("Erreur de connexion à la base de données MongoDB :", error);
 });
 
-// Modèle Clients
 const clientSchema = new mongoose.Schema({
     email: String,
     password: String,
@@ -28,7 +26,7 @@ const clientSchema = new mongoose.Schema({
     phone: String,
     address: String,
     distance: Number,
-    est_administrateur: Boolean // Champ pour indiquer si l'utilisateur est administrateur
+    est_administrateur: Boolean
 }, { collection: "Clients" });
 
 const Client = mongoose.model("Client", clientSchema);
@@ -43,7 +41,7 @@ const platSchema = new mongoose.Schema({
 
 const Plat = mongoose.model("Plat", platSchema);
 
-//le modèle Livreur
+
 const livreurSchema = new mongoose.Schema({
     nom: String,
     statut: String,
@@ -53,7 +51,6 @@ const livreurSchema = new mongoose.Schema({
 
 const Livreur = mongoose.model("Livreur", livreurSchema);
 
-//le modèle Commande
 const commandeSchema = new mongoose.Schema({
     clientId: String,
     plats: [
@@ -71,13 +68,10 @@ const Commande = mongoose.model("Commande", commandeSchema);
 
 app.use(express.json());
 
-// Middleware pour gérer les données JSON
 app.use(bodyParser.json());
 
-// Middleware pour autoriser les requêtes CORS
 app.use(cors());
 
-// Enregistrement d'un nouvel utilisateur (inscription)
 app.post("/inscription", async (req, res) => {
     try {
         const newClientData = req.body;
@@ -96,7 +90,6 @@ app.post("/inscription", async (req, res) => {
     }
 });
 
-// Connexion de l'utilisateur (vérification des informations)
 app.post("/connexion", async (req, res) => {
     const { email, password } = req.body;
 
@@ -107,11 +100,9 @@ app.post("/connexion", async (req, res) => {
             return res.status(401).json({ error: "Adresse e-mail incorrecte" });
         }
 
-        // Vous devrez ajouter la logique de hachage de mot de passe ici
-        // Comparer le mot de passe reçu (req.body.password) avec le mot de passe stocké dans la base de données (client.password)
 
         if (password === client.password) {
-            // Le mot de passe est correct, vous pouvez permettre la connexion
+
             return res.status(200).json(client);
         } else {
             return res.status(401).json({ error: "Mot de passe incorrect" });
@@ -121,16 +112,13 @@ app.post("/connexion", async (req, res) => {
     }
 });
 
-// Créez une nouvelle route pour gérer les commandes
 app.post("/commandes", async (req, res) => {
     try {
         const nouvelleCommande = new Commande(req.body);
-        nouvelleCommande.statut = "En cours"; // Par défaut, la commande est "En cours"
+        nouvelleCommande.statut = "En cours";
 
-        // Mettre à jour le statut du livreur associé à la commande
         const livreurId = req.body.livreurId;
 
-        // Mettez à jour le statut du livreur
         await Livreur.findByIdAndUpdate(livreurId, { statut: "occupé" });
 
         await nouvelleCommande.save();
@@ -142,12 +130,10 @@ app.post("/commandes", async (req, res) => {
 });
 
 
-//route pour récupérer les commandes (avec id du client a mettre en paramètre cf. OrderTracking.js)
 app.get('/orders', async (req, res) => {
     try {
-        const clientId = req.query.clientId; // Récupérez l'ID du client à partir de la requête
+        const clientId = req.query.clientId;
 
-        // Effectuez une requête pour obtenir les commandes pour ce client
         const clientOrders = await Commande.find({ clientId: clientId }).exec();
 
         res.status(200).json(clientOrders);
@@ -158,7 +144,6 @@ app.get('/orders', async (req, res) => {
 
 
 
-//route pour récupérer tous les livreurs
 app.get("/livreurs", async (req, res) => {
     try {
         const livreurs = await Livreur.find().exec();
@@ -170,7 +155,6 @@ app.get("/livreurs", async (req, res) => {
 });
 
 
-// Route pour obtenir la liste des livreurs avec le statut "libre"
 app.get("/livreurs-libres", async (req, res) => {
     try {
         const livreursLibres = await Livreur.find({ statut: "libre" }).exec();
@@ -182,7 +166,6 @@ app.get("/livreurs-libres", async (req, res) => {
 });
 
 
-// Route pour obtenir les plats du jour
 app.get("/plats_du_jour", async (req, res) => {
     try {
         // Requête pour récupérer tous les plats de type "Plat"
@@ -206,10 +189,8 @@ app.get("/plats_du_jour", async (req, res) => {
     }
 });
 
-// Route pour obtenir tous les plats
 app.get("/menu", async (req, res) => {
     try {
-        // Requête pour récupérer tous les plats
         const tousLesPlats = await Plat.find().exec();
 
         res.status(200).json(tousLesPlats);
@@ -218,10 +199,8 @@ app.get("/menu", async (req, res) => {
     }
 });
 
-// Route pour obtenir toutes les commandes en cours
 app.get("/commandes", async (req, res) => {
     try {
-        // Effectuez une requête pour obtenir toutes les commandes avec le statut "En cours"
         const commandesEnCours = await Commande.find({ statut: "En cours" }).exec();
         res.status(200).json(commandesEnCours);
     } catch (error) {
@@ -230,7 +209,6 @@ app.get("/commandes", async (req, res) => {
 });
 
 
-// Mettre à jour le profil utilisateur
 app.put("/update-profile/:email", async (req, res) => {
     const { email } = req.params;
     const updatedData = req.body;
@@ -252,24 +230,22 @@ app.put("/update-profile/:email", async (req, res) => {
     }
 });
 
-// Mettre à jour le statut de la commande
 app.put("/orders/:orderId", async (req, res) => {
     const { orderId } = req.params;
     const updatedStatus = req.body.statut;
 
     try {
-        // Update the order's status and get the updated order
         const updatedOrder = await Commande.findByIdAndUpdate(orderId, { statut: updatedStatus }, { new: true });
 
         if (!updatedOrder) {
             return res.status(404).json({ error: "Commande non trouvée" });
         }
 
-        // If the status of the order is "Livré", find the associated livreur and update their status to "libre"
+
         if (updatedStatus === "Livré") {
             const livreurId = updatedOrder.livreurId;
 
-            // Update the livreur's status to "libre"
+
             await Livreur.findByIdAndUpdate(livreurId, { statut: "libre" });
         }
 
@@ -281,7 +257,6 @@ app.put("/orders/:orderId", async (req, res) => {
 
 
 
-// Récupérer le profil utilisateur
 app.get("/profile/:email", async (req, res) => {
     const { email } = req.params;
 
@@ -298,10 +273,8 @@ app.get("/profile/:email", async (req, res) => {
     }
 });
 
-// Route for obtenir les plats et desserts du jour
 app.get("/plats_et_desserts_du_jour", async (req, res) => {
     try {
-        // Assuming you want the first two plats and the first two desserts
         const platsDuJour = await Plat.find({ type: "Plat" }).limit(2);
         const dessertsDuJour = await Plat.find({ type: "Dessert" }).limit(2);
 
@@ -311,19 +284,16 @@ app.get("/plats_et_desserts_du_jour", async (req, res) => {
     }
 });
 
-// Route pour supprimer une commande par son ID
 app.delete("/commandes/:commandeId", async (req, res) => {
     try {
         const { commandeId } = req.params;
 
-        // Vérifiez si la commande avec l'ID spécifié existe
         const commande = await Commande.findById(commandeId).exec();
 
         if (!commande) {
             return res.status(404).json({ error: "Commande non trouvée" });
         }
 
-        // Supprimez la commande de la base de données
         await Commande.findByIdAndRemove(commandeId).exec();
 
         res.status(200).json({ message: "Commande supprimée avec succès" });
@@ -332,10 +302,8 @@ app.delete("/commandes/:commandeId", async (req, res) => {
     }
 });
 
-// Route pour obtenir la liste des utilisateurs
 app.get("/users", async (req, res) => {
     try {
-        // Récupérez la liste de tous les utilisateurs depuis la base de données
         const users = await Client.find().exec();
         res.status(200).json(users);
     } catch (error) {
@@ -344,11 +312,9 @@ app.get("/users", async (req, res) => {
     }
 });
 
-// Route pour supprimer un utilisateur par ID
 app.delete("/users/:userId", async (req, res) => {
     const { userId } = req.params;
     try {
-        // Supprimez l'utilisateur correspondant par son ID
         const deletedUser = await Client.findByIdAndRemove(userId);
 
         if (!deletedUser) {
@@ -363,14 +329,12 @@ app.delete("/users/:userId", async (req, res) => {
 });
 
 
-// Middleware pour gérer les erreurs 404
 app.use((req, res, next) => {
     res.status(404).send("Désolé, cette page n'existe pas !");
 });
 
 
 
-// Démarrage du serveur
 const port = 8000;
 app.listen(port, () => {
     console.log(`Serveur en cours d'exécution sur le port ${port}`);

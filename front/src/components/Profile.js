@@ -8,7 +8,6 @@ function Profile() {
     const [alertMessage, setAlertMessage] = useState('');
     const { email, firstName, lastName, phone, address } = formData;
 
-    // Fetch the user's email from local storage
     const user = JSON.parse(localStorage.getItem('user') || {});
     const userEmail = user.email;
 
@@ -28,20 +27,16 @@ function Profile() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Ajoutez ici une validation de formulaire si nécessaire
 
         axios.put(`http://localhost:8000/update-profile/${userEmail}`, formData)
             .then(response => {
                 console.log('Profile updated', response.data);
-                // Update local storage with the updated profile data
                 localStorage.setItem('user', JSON.stringify(response.data));
-                // Set success alert
                 setUpdateStatus('success');
                 setAlertMessage('Profil mis à jour avec succès !');
             })
             .catch(error => {
                 console.error('Error updating profile', error);
-                // Set error alert
                 setUpdateStatus('danger');
                 setAlertMessage('Erreur lors de la mise à jour du profil.');
             });

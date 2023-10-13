@@ -8,13 +8,13 @@ function Login() {
         password: "",
     });
 
-    const navigate = useNavigate(); // Utilisez useNavigate pour gérer la redirection
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        // Déconnexion : supprimez les variables du localStorage
+
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("isAdmin"); // Supprimer "isAdmin" lors de la déconnexion
+        localStorage.removeItem("isAdmin");
     };
 
     const handleInputChange = (e) => {
@@ -26,11 +26,11 @@ function Login() {
     };
 
     const handleLogin = async (user) => {
-        // Stocker les informations de l'utilisateur dans le localStorage
+
         localStorage.setItem("user", JSON.stringify(user));
-        // Marquer l'utilisateur comme connecté
+
         localStorage.setItem("isLoggedIn", "true");
-        // Stocker si l'utilisateur est admin ou non
+
         localStorage.setItem("isAdmin", user.est_administrateur ? "true" : "false");
     };
 
@@ -51,21 +51,21 @@ function Login() {
                 const user = await response.json();
                 console.log('Connexion réussie', user);
 
-                // Appeler la fonction pour gérer la connexion
+
                 handleLogin(user);
                 if (localStorage.getItem("isLoggedIn")) {
-                    // La variable user existe, vous pouvez l'afficher dans la console de log
+
                     console.log("Utilisateur connecté :", JSON.parse(localStorage.getItem("user")));
                     console.log("est administrateur :", JSON.parse(localStorage.getItem("isAdmin")));
                 } else {
                     console.log("Utilisateur non connecté");
                 }
 
-                // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion réussie.
+
                 navigate("/");
             } else {
                 console.log('Échec de la connexion');
-                // La connexion a échoué, affichez un message d'erreur.
+
             }
         } catch (error) {
             console.error("Erreur lors de la connexion :", error);

@@ -9,11 +9,11 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import MentionsLegales from "./components/MentionsLegales";
-import Profile from "./components/Profile"; // Import MentionsLegales component
-import AdminPlatsPage from "./components/AdminPlatsPage"; // Importez la page d'administration des plats
-import AdminLivreursPage from "./components/AdminLivreursPage"; // Importez la page d'administration des livreurs
-import AdminCommandes from "./components/AdminCommandes"; // Import AdminCommandes component
-import AdminUsers from "./components/AdminUsers"; // Ajout de la route pour la gestion des utilisateurs
+import Profile from "./components/Profile";
+import AdminPlatsPage from "./components/AdminPlatsPage";
+import AdminLivreursPage from "./components/AdminLivreursPage";
+import AdminCommandes from "./components/AdminCommandes";
+import AdminUsers from "./components/AdminUsers";
 
 
 function App() {
@@ -31,8 +31,8 @@ function App() {
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/admin-plats" element={<AdminPlatsPage />} />
         <Route path="/admin-livreurs" element={<AdminLivreursPage />} />
-        <Route path="/admin/commandes" element={<AdminCommandes />} /> 
-        <Route path="/admin-users" element={<AdminUsers />} /> 
+        <Route path="/admin/commandes" element={<AdminCommandes />} />
+        <Route path="/admin-users" element={<AdminUsers />} />
       </Routes>
       <Footer />
     </Router>

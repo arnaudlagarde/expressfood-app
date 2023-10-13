@@ -5,8 +5,8 @@ function AdminPlatsPage() {
     const [plats, setPlats] = useState([]);
 
     useEffect(() => {
-        // Effectuez votre requête API pour récupérer tous les plats depuis votre serveur
-        fetch("http://localhost:8000/menu") // Assurez-vous que l'URL est correcte
+
+        fetch("http://localhost:8000/menu")
             .then((response) => response.json())
             .then((data) => setPlats(data))
             .catch((error) => console.error("Erreur lors de la récupération des plats :", error));

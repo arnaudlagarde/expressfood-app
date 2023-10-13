@@ -5,7 +5,7 @@ function AdminUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Chargez la liste des utilisateurs depuis l'API lors du chargement de la page
+
     axios.get('http://localhost:8000/users')
       .then(response => {
         setUsers(response.data);
@@ -16,11 +16,11 @@ function AdminUsers() {
   }, []);
 
   const handleSupprimerUtilisateur = (userId) => {
-    // Envoyez une demande de suppression de l'utilisateur à l'API
+
     axios.delete(`http://localhost:8000/users/${userId}`)
       .then(response => {
         if (response.status === 200) {
-          // Mettez à jour la liste des utilisateurs après la suppression
+
           setUsers(users.filter(user => user._id !== userId));
         }
       })

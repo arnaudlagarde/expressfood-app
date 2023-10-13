@@ -5,8 +5,8 @@ function AdminCommandes() {
   const [commandes, setCommandes] = useState([]);
 
   useEffect(() => {
-    // Chargez les commandes en cours depuis l'API lors du chargement de la page
-    axios.get('http://localhost:8000/commandes') // Utilisez l'URL complète avec le port 8000
+
+    axios.get('http://localhost:8000/commandes')
       .then(response => {
         setCommandes(response.data);
       })
@@ -16,8 +16,8 @@ function AdminCommandes() {
   }, []);
 
   const handleSupprimerCommande = (commandeId) => {
-    // Envoyez une demande de suppression de commande à l'API
-    axios.delete(`http://localhost:8000/commandes/${commandeId}`) // Utilisez l'URL complète avec le port 8000
+
+    axios.delete(`http://localhost:8000/commandes/${commandeId}`)
       .then(response => {
         if (response.status === 200) {
           // Mettez à jour la liste des commandes après la suppression

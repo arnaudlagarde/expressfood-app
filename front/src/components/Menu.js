@@ -38,7 +38,7 @@ function Menu() {
 
         const nouvelleCommande = {
           clientId: clientId,
-          plats: [], // Change this to an empty array as we're not using cart here
+          plats: [],
           dateCommande: new Date(),
           livreurId: premierLivreurLibre._id,
         };
@@ -47,7 +47,7 @@ function Menu() {
           .post("/commandes", nouvelleCommande)
           .then((response) => {
             console.log("Commande créée avec succès !", response.data);
-            clearCart(); // Clear the cart using clearCart
+            clearCart();
             setQuantities({});
           })
           .catch((error) => {
@@ -61,11 +61,11 @@ function Menu() {
 
   useEffect(() => {
     api
-      .get("/plats_et_desserts_du_jour") // Changed the endpoint to get both plats and desserts of the day
+      .get("/plats_et_desserts_du_jour")
       .then((response) => {
-        const { plats, desserts } = response.data; // Destructure the response
+        const { plats, desserts } = response.data;
 
-        // Set only the first 2 "Plat" and "Dessert" items
+
         setPlatsDuJour(plats.slice(0, 2));
         setDesserts(desserts.slice(0, 2));
       })
@@ -87,7 +87,7 @@ function Menu() {
                   src={plat.image}
                   height="250"
                   alt={plat.nom}
-                  className="dish-image" // Add this class for hover effect
+                  className="dish-image"
                 />
                 <Card.Body>
                   <Card.Title>{plat.nom}</Card.Title>
@@ -106,7 +106,7 @@ function Menu() {
                           <Dropdown.Item
                             key={quantity}
                             onClick={() => setQuantities({ ...quantities, [plat._id]: quantity })}
-                            className="quantity-dropdown-item" // Add this class for gray/white color
+                            className="quantity-dropdown-item"
                           >
                             {quantity}
                           </Dropdown.Item>
@@ -116,7 +116,7 @@ function Menu() {
                     <Button
                       variant="secondary"
                       onClick={() => addToCart(plat, quantities[plat._id] || 1)}
-                      className="add-to-cart-button" // Add this class for hover effect
+                      className="add-to-cart-button"
                     >
                       Ajouter au panier
                     </Button>
@@ -140,7 +140,7 @@ function Menu() {
                   src={plat.image}
                   height="250"
                   alt={plat.nom}
-                  className="dish-image" // Add this class for hover effect
+                  className="dish-image"
                 />
                 <Card.Body>
                   <Card.Title>{plat.nom}</Card.Title>
@@ -159,7 +159,7 @@ function Menu() {
                           <Dropdown.Item
                             key={quantity}
                             onClick={() => setQuantities({ ...quantities, [plat._id]: quantity })}
-                            className="quantity-dropdown-item" // Add this class for gray/white color
+                            className="quantity-dropdown-item"
                           >
                             {quantity}
                           </Dropdown.Item>
@@ -169,7 +169,7 @@ function Menu() {
                     <Button
                       variant="secondary"
                       onClick={() => addToCart(plat, quantities[plat._id] || 1)}
-                      className="add-to-cart-button" // Add this class for hover effect
+                      className="add-to-cart-button"
                     >
                       Ajouter au panier
                     </Button>
